@@ -31,15 +31,7 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 
 
-def reverse_dir(direction):
-    if direction == 'n':
-        return 's'
-    elif direction == 's':
-        return 'n'
-    elif direction == 'e':
-        return 'w'
-    else:
-        return 'e'
+reverese_directions = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
 
 
 def Maze():
@@ -56,11 +48,9 @@ def Maze():
             # add the room to visited_rooms
             visited_rooms[player.current_room.id] = player.current_room.get_exits()
             # remove the reverse previous path so that we dont end up with the previous room
-            print("ss", reverse_paths[-1])
-            prev_room = reverse_paths[-1]
-            visited_rooms[player.current_room.id].remove(prev_room)
+            visited_rooms[player.current_room.id].remove(reverse_paths[-1])
         # if the room with no paths
-        while len(visited_rooms[player.current_room.id]) < 1:
+        while len(visited_rooms[player.current_room.id]) == 0:
             path = reverse_paths.pop()
             print("path", path)
             player.travel(path)
@@ -68,7 +58,7 @@ def Maze():
         # else room in visited_rooms
         else:
             get_path = visited_rooms[player.current_room.id].pop()
-            reverse_paths.append(reverse_dir(get_path))
+            reverse_paths.append(reverese_directions[get_path])
             # move to another room
             player.travel(get_path)
             traversal_path.append(get_path)
